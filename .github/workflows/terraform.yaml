@@ -101,11 +101,14 @@ jobs:
       # Apply the Terraform configuration
       - name: Terraform Apply
         if: ${{ github.event.inputs.terraform_action == 'apply' }}
+         tf_actions_subcommand:${{ github.event.inputs.terraform_action }} -auto-approve
         run: ${{ github.event.inputs.terraform_action }} -auto-approve
 
       # Destroy the Terraform configuration
       - name: Terraform Destroy
         if: ${{ github.event.inputs.terraform_action == 'destroy' }}
+         tf_actions_subcommand:${{ github.event.inputs.terraform_action }} -auto-approve
+
         run: ${{ github.event.inputs.terraform_action }} -auto-approve
 
 
