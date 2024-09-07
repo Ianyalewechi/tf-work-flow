@@ -1,0 +1,55 @@
+name: 'Terraform'
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    env:
+        #AWS Secrets
+        AWS_ACCESS_KEY_ID: ${{secrets.AWS_DEVOPS_ACCESS_KEY_ID}}
+        AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_DEVOPS_SECRET_ACCESS_KEY_ID}}
+
+    runs-on: ubuntu-latest
+    
+
+    steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Initialize a new or existing Terraform working directory
+      - name: Terraform Init
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: 0.14.3
+          tf_actions_subcommand: 'init'
+          tf_actions_working_dir: '.'
+          tf_actions_comment: true
+
+      # Generates an execution plan for Terraform
+      - name: Terraform Plan
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: 0.14.3
+          tf_actions_subcommand: 'plan'
+          tf_actions_working_dir: '.'
+          tf_actions_comment: true
+
+      # Apply the Terraform configuration
+      - name: Terraform Apply
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: 0.14.3
+          tf_actions_subcommand: 'apply'
+          tf_actions_working_dir: '.'
+          tf_actions_comment: true
+
+      
+
+
+
+      
