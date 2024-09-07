@@ -53,7 +53,7 @@
 #           tf_actions_comment: true
 
       
-name: 'Terraform'
+name: 'Terraform Workflow'
 
 on:
   workflow_dispatch:
@@ -72,7 +72,7 @@ on:
 
 jobs:
   terraform:
-    name: 'Terraform'
+    name: 'Terraform Job'
     runs-on: ubuntu-latest
     env:
       # AWS Secrets
@@ -101,15 +101,15 @@ jobs:
       # Apply the Terraform configuration
       - name: Terraform Apply
         if: ${{ github.event.inputs.terraform_action == 'apply' }}
-         tf_actions_subcommand:${{ github.event.inputs.terraform_action }}
-        run: ${{ github.event.inputs.terraform_action }}
+        run: terraform apply -auto-approve
 
       # Destroy the Terraform configuration
       - name: Terraform Destroy
         if: ${{ github.event.inputs.terraform_action == 'destroy' }}
-         tf_actions_subcommand:${{ github.event.inputs.terraform_action }} 
+        run: terraform destroy -auto-approve
 
-        run: ${{ github.event.inputs.terraform_action }}
+
+        
 
 
 
