@@ -56,6 +56,16 @@
 name: 'Terraform'
 
 on:
+  workflow_dispatch:
+    inputs:
+      terraform_action:
+        type: choice
+        description: "Select Terraform Action"
+        options:
+          - apply
+          - destroy
+        required: true
+
   push:
     branches:
       - "main"
@@ -71,7 +81,7 @@ jobs:
 
     steps:
       # Checkout the repository to the GitHub Actions runner
-      - name: Checkout
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       # Set up Terraform CLI
@@ -90,7 +100,13 @@ jobs:
 
       # Apply the Terraform configuration
       - name: Terraform Apply
+        if: ${{ github.event.inputs.terraform_action == 'apply' }}
         run: terraform apply -auto-approve
+
+      # Destroy the Terraform configuration
+      - name: Terraform Destroy
+        if: ${{ github.event.inputs.terraform_action == 'destroy' }}
+        run: terraform destroy -auto-approve
 
 
 
